@@ -1,0 +1,69 @@
+.contenedor-principal {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+  padding-bottom: 30px;
+  width: 50%;
+  box-shadow: 3px 2px 5px black;
+}
+
+.grande {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 10%;
+}
+
+h2 {
+  margin-left: 12px;
+}
+
+.aa {
+  text-align: end;
+}
+
+.aa1 {
+  text-align: end;
+  margin-right: 10px;
+}
+
+.contenedor-interno {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.contenedor-interno1 {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.contenedor-login {
+  border-color: black;
+  margin: 60px;
+}
+
+.contenedor-login1 {
+  border-color: black;
+  margin-left: 20px;
+  margin-right: 20px;
+
+}
+
+.titlesdash {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.inputcl {
+  width: 50px;
+}
