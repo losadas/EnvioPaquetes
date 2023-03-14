@@ -1,14 +1,20 @@
-const mongoose = require('mongoose')
-const monpaginate = require('mongoose-paginate-v2')
-const ItemSchema = new mongoose.Schema({
-    name: String
-},
-{
-    versionKey: false,
-    timestamps: true
-}
-
+const { model, Schema } = require('mongoose')
+const itemSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true
+    }
+  },
+  { versionKey: false }
 )
 
-ItemSchema.plugin(monpaginate)
-module.exports = mongoose.model('item', ItemSchema)
+itemSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+  }
+})
+const Item = model('Item', itemSchema)
+
+module.exports = Item

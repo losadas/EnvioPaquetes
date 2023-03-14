@@ -1,17 +1,23 @@
-const mongoose = require('mongoose')
-const monpaginate = require('mongoose-paginate-v2')
-const UserSchema = new mongoose.Schema({
-    nombre: String,  
+const { model, Schema } = require('mongoose')
+const userSchema = new Schema(
+  {
+    nombre: String,
     usuario: String,
     passwordHash: String,
     email: String
-},
-{
+  },
+  {
     versionKey: false,
     timestamps: true
-}
-
+  }
 )
 
-UserSchema.plugin(monpaginate)
-module.exports = mongoose.model('user', UserSchema)
+userSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+  }
+})
+const User = model('User', userSchema)
+
+module.exports = User

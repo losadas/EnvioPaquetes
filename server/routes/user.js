@@ -1,4 +1,4 @@
-const express = require ('express')
+const express = require('express')
 
 const controller = require('../controllers/user')
 
@@ -9,41 +9,23 @@ const router = express.Router()
 const path = 'user'
 
 router.get(
-    `/${path}`,
-    auth,
-    controller.getData
+  `/${path}`,
+  // auth,
+  controller.getData
 )
 
-router.post(
-    `/${path}`,
-    controller.insertData
-)
+router.post(`/${path}`, controller.insertData)
 
 // para login
-router.post(
-    '/login',
-    controller.sigIn
-)
+router.post('/login', controller.sigIn)
 
-router.get(
-    '/loggedIn',
-    controller.logged
-)
+router.get('/loggedIn', controller.logged)
 
 //para logout
-router.get(
-    '/logout',
-    controller.logout
-)
+router.get('/logout', controller.logout)
 
-router.put(
-    `/${path}/:id`,
-    controller.updateSingle
-)
+router.put(`/${path}/:id`, controller.updateSingle)
 
-router.delete(
-    `/${path}/:id`,
-    controller.deleteSingle
-)
+router.delete(`/${path}/:id`, controller.deleteSingle)
 
 module.exports = router

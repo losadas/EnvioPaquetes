@@ -1,4 +1,4 @@
-const express = require ('express')
+const express = require('express')
 
 const controller = require('../controllers/item')
 
@@ -9,15 +9,15 @@ const router = express.Router()
 const path = 'item'
 
 router.get(
-    `/${path}`,
-    auth,
-    controller.getData
+  `/${path}`,
+  // auth,
+  controller.getData
 )
 
 router.post(
-    `/${path}`,
-    auth,
-    controller.insertData
+  `/${path}`,
+  // auth,
+  controller.insertData
 )
 
 module.exports = router
