@@ -1,8 +1,23 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
+import LogOutBtn from "./LogOutBtn";
+import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useContext } from "react";
+import AuthContext from "../context/AuthContext";
+import axios from "axios";
 
 export default function UpdateOrder() {
+  const { userToken } = useContext(AuthContext)
+  const [userItem, setUserItem] = useState([]);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const orderId = searchParams.get('orderId');
+  async function getUserItem() {
+    const items = await axios.get('item', {params: {_id: orderId}});
+    setUserItem(items.data)
+  }
+  
   const {
     register,
     handleSubmit,
@@ -10,14 +25,23 @@ export default function UpdateOrder() {
   } = useForm();
 
   const navigate = useNavigate();
-  const onSubmit = () => {
-    console.log("Órden actualizada correctamente");
-    setTimeout(() => {
-      return navigate("/dashboard");
-    }, 3000);
+  const onSubmit = async(data) => {
+    try {
+      console.log('Entro al onSubmit');
+      await axios.put('item', data)
+      console.log('Órden actualizada correctamente')
+      navigate('/dashboard')
+    } catch (error) {
+      console.error(error)
+    }
   };
 
+  useEffect(() => {
+    getUserItem()
+  }, []);
+
   return (
+    <>
     <div className="grande">
       <div className="contenedor-principal">
         <h2>Gestión de paquetes - Actualización de órdenes</h2>
@@ -26,26 +50,30 @@ export default function UpdateOrder() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label>Fecha</label>
+                <input type="hidden" value={userToken} { ...register("userId")}/>
+                <input type="hidden" value={orderId} { ...register("orderId")}/>
                 <input
                   type="date"
                   {...register("fecha", {
-                    required: true,
+                    
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].date : ''}
                 />
                 <label>Hora</label>
                 <input
                   type="time"
                   {...register("time", {
-                    required: true,
+                    
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].time : ''}
                 />
               </div>
               <div>
                 <label>Estado</label>
                 <select {...register("estado")}>
-                  <option value="Guardado">Guardado</option>
-                  <option value="Cumplido">Cumplido</option>
-                  <option value="Cancelado">Cancelado</option>
+                  <option value="Guardado" selected={userItem.length > 0 && userItem[0].state === 'Guardado'}>Guardado</option>
+                  <option value="Cumplido" selected={userItem.length > 0 && userItem[0].state === 'Cumplido'}>Cumplido</option>
+                  <option value="Cancelado" selected={userItem.length > 0 && userItem[0].state === 'Cancelado'}>Cancelado</option>
                 </select>
               </div>
               <div>
@@ -54,32 +82,36 @@ export default function UpdateOrder() {
                   className="inputcl"
                   type="number"
                   {...register("largo", {
-                    required: true,
+                    
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].specs.largo : ''}
                 />
                 <label>Ancho</label>
                 <input
                   className="inputcl"
                   type="number"
                   {...register("ancho", {
-                    required: true,
+                    
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].specs.ancho : ''}
                 />
                 <label>Alto</label>
                 <input
                   className="inputcl"
                   type="number"
                   {...register("alto", {
-                    required: true,
+                    
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].specs.alto : ''}
                 />
                 <label>Peso</label>
                 <input
                   className="inputcl"
                   type="number"
                   {...register("peso", {
-                    required: true,
+                    
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].specs.peso : ''}
                 />
               </div>
               <div>
@@ -87,8 +119,9 @@ export default function UpdateOrder() {
                 <input
                   type="text"
                   {...register("direccion", {
-                    required: true,
+                    
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].addrRec : ''}
                 />
                 {errors.direccion?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -97,16 +130,16 @@ export default function UpdateOrder() {
               <div>
                 <label>Ciudad recogida</label>
                 <select {...register("ciudad")}>
-                  <option value="Medellín">Medellín</option>
-                  <option value="Leticia">Leticia</option>
-                  <option value="Neiva">Neiva</option>
-                  <option value="Bogotá">Bogotá</option>
-                  <option value="Manizales">Manizales</option>
-                  <option value="Yopal">Yopal</option>
-                  <option value="Barranquilla">Barranquilla</option>
-                  <option value="Valledupar">Valledupar</option>
-                  <option value="Tunja">Tunja</option>
-                  <option value="Pasto">Pasto</option>
+                  <option value="Medellín" selected={userItem.length > 0 && userItem[0].cityRec === 'Medellín'}>Medellín</option>
+                  <option value="Leticia" selected={userItem.length > 0 && userItem[0].cityRec === 'Leticia'}>Leticia</option>
+                  <option value="Neiva" selected={userItem.length > 0 && userItem[0].cityRec === 'Neiva'}>Neiva</option>
+                  <option value="Bogotá" selected={userItem.length > 0 && userItem[0].cityRec === 'Bogotá'}>Bogotá</option>
+                  <option value="Manizales" selected={userItem.length > 0 && userItem[0].cityRec === 'Manizales'}>Manizales</option>
+                  <option value="Yopal" selected={userItem.length > 0 && userItem[0].cityRec === 'Yopal'}>Yopal</option>
+                  <option value="Barranquilla" selected={userItem.length > 0 && userItem[0].cityRec === 'Barranquilla'}>Barranquilla</option>
+                  <option value="Valledupar" selected={userItem.length > 0 && userItem[0].cityRec === 'Valledupar'}>Valledupar</option>
+                  <option value="Tunja" selected={userItem.length > 0 && userItem[0].cityRec === 'Tunja'}>Tunja</option>
+                  <option value="Pasto" selected={userItem.length > 0 && userItem[0].cityRec === 'Pasto'}>Pasto</option>
                 </select>
               </div>
               <div>
@@ -116,6 +149,7 @@ export default function UpdateOrder() {
                   {...register("nomdestin", {
                     required: true
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].nameDes : ''}
                 />
                 {errors.nomdestin?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -128,6 +162,7 @@ export default function UpdateOrder() {
                   {...register("cedula", {
                     required: true,
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].cedDes : ''}
                 />
                 {errors.cedula?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -140,6 +175,7 @@ export default function UpdateOrder() {
                   {...register("direccione", {
                     required: true,
                   })}
+                  defaultValue={userItem.length > 0 ? userItem[0].addrEnt : ''}
                 />
                 {errors.direccione?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -147,17 +183,17 @@ export default function UpdateOrder() {
               </div>
               <div>
                 <label>Ciudad entrega</label>
-                <select {...register("ciudade")}>
-                  <option value="Medellín">Medellín</option>
-                  <option value="Leticia">Leticia</option>
-                  <option value="Neiva">Neiva</option>
-                  <option value="Bogotá">Bogotá</option>
-                  <option value="Manizales">Manizales</option>
-                  <option value="Yopal">Yopal</option>
-                  <option value="Barranquilla">Barranquilla</option>
-                  <option value="Valledupar">Valledupar</option>
-                  <option value="Tunja">Tunja</option>
-                  <option value="Pasto">Pasto</option>
+                <select {...register("ciudade")} > 
+                  <option value="Medellín" selected={userItem.length > 0 && userItem[0].cityEnt === 'Medellín'}>Medellín</option>
+                  <option value="Leticia" selected={userItem.length > 0 && userItem[0].cityEnt === 'Leticia'}>Leticia</option>
+                  <option value="Neiva" selected={userItem.length > 0 && userItem[0].cityEnt === 'Neiva'}>Neiva</option>
+                  <option value="Bogotá" selected={userItem.length > 0 && userItem[0].cityEnt === 'Bogotá'}>Bogotá</option>
+                  <option value="Manizales" selected={userItem.length > 0 && userItem[0].cityEnt === 'Manizales'}>Manizales</option>
+                  <option value="Yopal" selected={userItem.length > 0 && userItem[0].cityEnt === 'Yopal'}>Yopal</option>
+                  <option value="Barranquilla" selected={userItem.length > 0 && userItem[0].cityEnt === 'Barranquilla'}>Barranquilla</option>
+                  <option value="Valledupar" selected={userItem.length > 0 && userItem[0].cityEnt === 'Valledupar'}>Valledupar</option>
+                  <option value="Tunja" selected={userItem.length > 0 && userItem[0].cityEnt === 'Tunja'}>Tunja</option>
+                  <option value="Pasto" selected={userItem.length > 0 && userItem[0].cityEnt === 'Pasto'}>Pasto</option>
                 </select>
               </div>
               <div>
@@ -168,5 +204,7 @@ export default function UpdateOrder() {
         </div>
       </div>
     </div>
+    <LogOutBtn/>
+    </>
   );
 }

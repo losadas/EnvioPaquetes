@@ -12,8 +12,11 @@ const options = {
 exports.getData = async (req, res) => {
   try {
     await connect()
-    const items = await usermodel.find()
-    res.json(items)
+    const { usuario } = req.body
+    const itemsUser = await usermodel.find({ usuario }).populate('items', {
+      user: 0
+    })
+    res.json(itemsUser)
   } catch (error) {
     console.error(error)
     res.status(500).send()
@@ -27,9 +30,14 @@ exports.insertData = async (req, res) => {
   try {
     await connect()
     const { nombre, usuario, password, email } = req.body
-    const existinUser = await usermodel.findOne({ email })
-    if (existinUser) {
+    const existingEmail = await usermodel.findOne({ email })
+    const existingUser = await usermodel.findOne({ usuario })
+    if (existingEmail) {
       res.send({ error: 'Ya existe un usuario con este correo' }).end()
+    } else if (existingUser) {
+      res
+        .send({ error: 'Ya existe un usuario con este nombre de Usuario' })
+        .end()
     } else {
       const salt = await bcrypt.genSalt()
       const passwordHash = await bcrypt.hash(password, salt)
@@ -55,6 +63,7 @@ exports.insertData = async (req, res) => {
           httpOnly: true
         })
         .status(200)
+        .json(savedUser)
         .end()
     }
   } catch (error) {
@@ -68,19 +77,17 @@ exports.insertData = async (req, res) => {
 
 exports.sigIn = async (req, res) => {
   try {
+    await connect()
     const { usuario, password } = req.body
 
     const existingUser = await usermodel.findOne({ usuario })
-
-    if (!existingUser)
-      return res.status(401).json({ errorMessage: 'Wrong user or password' })
 
     const passwordCorrect = await bcrypt.compare(
       password,
       existingUser.passwordHash
     )
     if (!passwordCorrect)
-      return res.status(401).json({ errorMessage: 'Wrong user or password' })
+      return res.status(401).json({ errorMessage: 'Invalid user or password' })
 
     const token = jwt.sign(
       {
@@ -98,18 +105,20 @@ exports.sigIn = async (req, res) => {
     console.error(err)
     res.status(500).send()
   }
+  mongoose.connection.close(() => {
+    console.log('Closed Connection', mongoose.connection.readyState)
+  })
 }
 
-exports.logged = (req, res) => {
+exports.loggedIn = (req, res) => {
   try {
     const token = req.cookies.token
-    if (!token) return res.json(false)
-
-    const verified = jwt.verify(token, process.env.JWT_SECRET)
-
-    res.send(true)
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+    const isLoggedIn = true
+    const userToken = decodedToken.user
+    res.send({ isLoggedIn, userToken }).end()
   } catch (error) {
-    res.json(false)
+    res.send({ isLoggedIn: false }).end()
   }
 }
 

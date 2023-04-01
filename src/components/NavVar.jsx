@@ -2,29 +2,39 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import LogOutBtn from "./LogOutBtn";
+import './navstyl.css';
 
 function NavVar() {
   const { loggedIn } = useContext(AuthContext);
   console.log(loggedIn);
   return (
+    <>
+    <nav id="navbar">
     <div>
-      <Link to="/">HOME</Link>
+        Welcome, please login
+    </div>
+    <div>
+      
       {loggedIn === false && (
         <>
-          <Link to="/login">LOGIN</Link>
+          <Link to="/login">Login</Link>
+          <div>
+            Or
+          </div>
           <Link to="/register">Register</Link>
         </>
       )}
 
       {loggedIn === true && (
         <>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/createorder">CreateOrder</Link>
-          <Link to="/updateorder">UpdateOrder</Link>
           <LogOutBtn />
         </>
       )}
     </div>
+    </nav>
+    
+    
+    </>
   );
 }
 

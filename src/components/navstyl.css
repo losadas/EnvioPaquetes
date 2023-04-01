@@ -1,0 +1,48 @@
+body {
+  background-image: url('https://img.freepik.com/vector-premium/entrega-paquetes-concepto-hombre-entrega_225067-84.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#navbar {
+  margin-top: 20%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#navbar > div:first-child {
+  font-size: 18px;
+  text-align: center;
+  color: black;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+#navbar > div:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#navbar a {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  transition: background-color 0.3s ease;
+}
+
+#navbar a:hover {
+  background-color: #0056b3;
+}

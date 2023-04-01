@@ -7,6 +7,7 @@ import UpdateOrder from "./components/UpdateOrder";
 import NavVar from "./components/NavVar";
 import Dashboard from "./components/Dashboard";
 import AuthContext from "./context/AuthContext";
+import Unauthorized from "./components/Unauthorized";
 import { useContext } from "react";
 
 function Rutas() {
@@ -20,6 +21,7 @@ function Rutas() {
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/unauthorized" element={<Unauthorized />} />
             </>
           )}
           {loggedIn === true && (

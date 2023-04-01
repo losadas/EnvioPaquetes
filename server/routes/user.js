@@ -18,14 +18,14 @@ router.post(`/${path}`, controller.insertData)
 
 // para login
 router.post('/login', controller.sigIn)
-
-router.get('/loggedIn', controller.logged)
+//get user loggedIn
+router.get('/loggedIn', controller.loggedIn)
 
 //para logout
 router.get('/logout', controller.logout)
-
+//put user
 router.put(`/${path}/:id`, controller.updateSingle)
-
+//delete user
 router.delete(`/${path}/:id`, controller.deleteSingle)
 
 module.exports = router

@@ -14,10 +14,8 @@ router.get(
   controller.getData
 )
 
-router.post(
-  `/${path}`,
-  // auth,
-  controller.insertData
-)
+router.post(`/${path}`, auth, controller.insertData)
+
+router.put(`/${path}`, auth, controller.updateData)
 
 module.exports = router

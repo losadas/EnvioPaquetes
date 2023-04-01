@@ -1,8 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState, useContext } from "react";
+import AuthContext from "../context/AuthContext";
 import "../App.css";
+import LogOutBtn from "./LogOutBtn";
 
 export default function CreateOrder() {
+  const { userToken } = useContext(AuthContext)
   const {
     register,
     handleSubmit,
@@ -10,14 +15,18 @@ export default function CreateOrder() {
   } = useForm();
 
   const navigate = useNavigate()
-  const onSubmit = () => {
-    console.log('Órden creada correctamente')
-    setTimeout(() => {
-      return navigate('/dashboard')
-    }, 3000);
+  const onSubmit = async (data) => {
+    try {
+      await axios.post('item', data)
+      console.log('Órden creada correctamente')
+      navigate('/dashboard')
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   return (
+    <>
     <div className="grande">
       <div className="contenedor-principal">
         <h2>Gestión de paquetes - Registro órdenes</h2>
@@ -25,6 +34,7 @@ export default function CreateOrder() {
           <div className="contenedor-login">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div>
+                <input type="hidden" value={userToken} { ...register("userId")}/>
                 <label>Fecha</label>
                 <input
                   type="date"
@@ -162,5 +172,7 @@ export default function CreateOrder() {
         </div>
       </div>
     </div>
+    <LogOutBtn/>
+    </>
   );
 }

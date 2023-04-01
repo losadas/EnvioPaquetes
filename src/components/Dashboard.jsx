@@ -1,8 +1,22 @@
 import { Link } from "react-router-dom";
 import "../App.css";
+import axios from "axios";
+import { useEffect, useState, Fragment, useContext } from "react";
+import AuthContext from "../context/AuthContext";
+import LogOutBtn from "./LogOutBtn";
 
 export default function Dashboard() {
+  const [userItems, setUserItems] = useState([]);
+  const { userToken } = useContext(AuthContext)
+  async function getUserItems() {
+    const items = await axios.get('item', {params: {userToken}});
+    setUserItems(items.data)
+  }
+  useEffect(() => {
+    getUserItems()
+  }, []);
   return (
+    <>
     <div className="grande">
       <div className="contenedor-principal">
         <h2>Gestión de paquetes - Listado de órdenes</h2>
@@ -20,15 +34,21 @@ export default function Dashboard() {
             </div>
             <hr />
             <div className="titlesdash">
-              <Link to="/updateorder">1</Link>
-              <label>01/01/2021</label>
-              <label>Santa Marta</label>
-              <label>Calle 1 #2-3</label>
-              <label>Guardado</label>
+            {userItems.map(element => {
+                return (<Fragment key={element.cedDes}>
+                  <Link to={{pathname: '/updateorder', search: `?orderId=${element.id}`}}>1</Link>
+                  <label>{element.date}</label>
+                  <label>{element.cityEnt}</label>
+                  <label>{element.addrEnt}</label>
+                  <label>{element.state}</label>
+                </Fragment>)
+              })}
             </div>
           </div>
         </div>
       </div>
     </div>
+    <LogOutBtn/>
+    </>
   );
 }
