@@ -1,7 +1,7 @@
 const itemmodel = require('../models/item')
 const usermodel = require('../models/user')
 const { connect, mongoose } = require('./db')
-
+//sskey
 const options = {
   page: 1,
   limit: 2
@@ -102,29 +102,30 @@ exports.updateData = async (req, res) => {
       orderId,
       estado
     } = req.body
-    console.log('bodyyyy:', req.body)
+
+    const item = await itemmodel.findById(orderId)
+
     const itemUpdated = {
       specs: {
-        largo,
-        ancho,
-        alto,
-        peso
+        largo: largo !== '' ? largo : item.specs.largo,
+        ancho: ancho !== '' ? ancho : item.specs.ancho,
+        alto: alto !== '' ? alto : item.specs.alto,
+        peso: peso !== '' ? peso : item.specs.peso
       },
-      date: fecha,
-      time,
-      addrRec: direccion,
-      cityRec: ciudad,
-      nameDes: nomdestin,
-      cedDes: cedula,
-      addrEnt: direccione,
-      cityEnt: ciudade,
-      state: estado
+      date: fecha !== '' ? fecha : item.date,
+      time: time !== '' ? time : item.time,
+      addrRec: direccion !== '' ? direccion : item.addrRec,
+      cityRec: ciudad !== '' ? ciudad : item.cityRec,
+      nameDes: nomdestin !== '' ? nomdestin : item.nameDes,
+      cedDes: cedula !== '' ? cedula : item.cedDes,
+      addrEnt: direccione !== '' ? direccione : item.addrEnt,
+      cityEnt: ciudade !== '' ? ciudade : item.cityEnt,
+      state: estado !== '' ? estado : item.state
     }
 
     const savedItem = await itemmodel.findByIdAndUpdate(orderId, itemUpdated, {
       new: true
     })
-    console.log('saved iteeeeem', savedItem)
 
     res.json(savedItem)
   } catch (error) {

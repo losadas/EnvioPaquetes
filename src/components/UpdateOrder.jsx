@@ -58,6 +58,13 @@ export default function UpdateOrder() {
                     
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].date : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 <label>Hora</label>
                 <input
@@ -66,11 +73,23 @@ export default function UpdateOrder() {
                     
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].time : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
               </div>
               <div>
                 <label>Estado</label>
-                <select {...register("estado")}>
+                <select {...register("estado")}
+                onChange={(e) =>
+                  e.target.value === "" ? e.target.setAttribute("required", true) : e.target.removeAttribute("required")
+                }
+                >
+                  <option value="">Select</option>
                   <option value="Guardado" selected={userItem.length > 0 && userItem[0].state === 'Guardado'}>Guardado</option>
                   <option value="Cumplido" selected={userItem.length > 0 && userItem[0].state === 'Cumplido'}>Cumplido</option>
                   <option value="Cancelado" selected={userItem.length > 0 && userItem[0].state === 'Cancelado'}>Cancelado</option>
@@ -85,6 +104,13 @@ export default function UpdateOrder() {
                     
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].specs.largo : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 <label>Ancho</label>
                 <input
@@ -94,6 +120,13 @@ export default function UpdateOrder() {
                     
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].specs.ancho : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 <label>Alto</label>
                 <input
@@ -103,6 +136,13 @@ export default function UpdateOrder() {
                     
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].specs.alto : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 <label>Peso</label>
                 <input
@@ -112,6 +152,13 @@ export default function UpdateOrder() {
                     
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].specs.peso : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -119,9 +166,15 @@ export default function UpdateOrder() {
                 <input
                   type="text"
                   {...register("direccion", {
-                    
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].addrRec : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 {errors.direccion?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -129,7 +182,12 @@ export default function UpdateOrder() {
               </div>
               <div>
                 <label>Ciudad recogida</label>
-                <select {...register("ciudad")}>
+                <select {...register("ciudad")}
+                onChange={(e) =>
+                  e.target.value === "" ? e.target.setAttribute("required", true) : e.target.removeAttribute("required")
+                }
+                >
+                  <option value="">Select</option>
                   <option value="Medellín" selected={userItem.length > 0 && userItem[0].cityRec === 'Medellín'}>Medellín</option>
                   <option value="Leticia" selected={userItem.length > 0 && userItem[0].cityRec === 'Leticia'}>Leticia</option>
                   <option value="Neiva" selected={userItem.length > 0 && userItem[0].cityRec === 'Neiva'}>Neiva</option>
@@ -147,9 +205,15 @@ export default function UpdateOrder() {
                 <input
                   type="text"
                   {...register("nomdestin", {
-                    required: true
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].nameDes : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 {errors.nomdestin?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -160,9 +224,15 @@ export default function UpdateOrder() {
                 <input
                   type="number"
                   {...register("cedula", {
-                    required: true,
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].cedDes : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 {errors.cedula?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -173,9 +243,15 @@ export default function UpdateOrder() {
                 <input
                   type="text"
                   {...register("direccione", {
-                    required: true,
                   })}
                   defaultValue={userItem.length > 0 ? userItem[0].addrEnt : ''}
+                  onBlur={(event) => {
+                    if (event.target.value === "") {
+                      event.target.setAttribute("required", true);
+                    } else {
+                      event.target.removeAttribute("required");
+                    }
+                  }}
                 />
                 {errors.direccione?.type === "required" && (
                   <p>El campo es Requerido</p>
@@ -183,7 +259,12 @@ export default function UpdateOrder() {
               </div>
               <div>
                 <label>Ciudad entrega</label>
-                <select {...register("ciudade")} > 
+                <select {...register("ciudade")} 
+                onChange={(e) =>
+                  e.target.value === "" ? e.target.setAttribute("required", true) : e.target.removeAttribute("required")
+                }
+                > 
+                <option value="">Select</option>
                   <option value="Medellín" selected={userItem.length > 0 && userItem[0].cityEnt === 'Medellín'}>Medellín</option>
                   <option value="Leticia" selected={userItem.length > 0 && userItem[0].cityEnt === 'Leticia'}>Leticia</option>
                   <option value="Neiva" selected={userItem.length > 0 && userItem[0].cityEnt === 'Neiva'}>Neiva</option>

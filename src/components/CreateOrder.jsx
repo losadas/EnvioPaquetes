@@ -17,9 +17,11 @@ export default function CreateOrder() {
   const navigate = useNavigate()
   const onSubmit = async (data) => {
     try {
-      await axios.post('item', data)
-      console.log('Órden creada correctamente')
-      navigate('/dashboard')
+      console.log(data);
+      console.log(register);
+      // await axios.post('item', data)
+      // console.log('Órden creada correctamente')
+      // navigate('/dashboard')
     } catch (error) {
       console.error(error)
     }
